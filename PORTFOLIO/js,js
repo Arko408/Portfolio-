@@ -1,0 +1,90 @@
+
+// Sticky Navbar on Scroll
+
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('sticky', window.scrollY > 100);
+});
+
+
+
+// Active Navbar Link on Scroll
+
+let sections = document.querySelectorAll('section, div[id]');
+let navLinks = document.querySelectorAll('.nav_links');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 150;
+        const sectionHeight = section.offsetHeight;
+
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
+
+// Scroll Reveal Animation
+const revealElements = document.querySelectorAll(
+    '.home_container, .home_logo, .skill_box, .project_box, .education_box, .contact_form'
+);
+
+const revealOnScroll = () => {
+    revealElements.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+
+        if (elementTop < windowHeight - 100) {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }
+    });
+};
+
+window.addEventListener('scroll', revealOnScroll);
+
+
+// Initial state for animation
+revealElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+    el.style.transition = 'all 0.8s ease';
+});
+
+
+// Contact Form Interaction
+
+const form = document.querySelector('.contact_form');
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const inputs = form.querySelectorAll('input[required], textarea[required]');
+    let valid = true;
+
+    inputs.forEach(input => {
+        if (input.value.trim() === '') {
+            valid = false;
+            input.style.borderColor = 'red';
+        } else {
+            input.style.borderColor = 'aqua';
+        }
+    });
+
+    if (valid) {
+        alert("Message sent successfully!");
+        form.reset();
+    } else {
+        alert("Please fill all required fields.");
+    }
+});
